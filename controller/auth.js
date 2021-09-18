@@ -155,6 +155,98 @@ exports.createUser = (req, res) => {
 
 }
 
+// Create route pending
+exports.createAdmin = (req, res) => {
+  // const { name, email, password } = req.body;
+  // const userobj = {
+  //   name,
+  //   email, password 
+  // }
+  
+  
+  // User.create(userobj)
+  // // User.insertOne(userobj)
+  //   .then((data) => {
+  //     console.log(data);
+  //     if (data.success) {
+  //       res.send().json({
+  //         message:"User Added successfully",
+  //       })
+  //     }
+  // })
+
+
+
+  //////////---------------------------------------------------
+
+  const { name, email, password } = req.body;
+  console.log(name, " ", email, " ", password);
+
+  User.find({ email: `${email}` }).then((data) => {
+      if (data.length > 0) {
+          res.status(400).json({
+              error: "user Already exists",
+            });
+      }
+      else {
+          // var user = { name: `${username}`, email: `${email}`, password: `${password}` };
+          // User.create(user)
+          // .then(function(dbuser) {
+          //     console.log(dbuser);
+          // })
+          // .catch(function(err) {
+          //     console.log(err);
+          // });
+
+          bcrypt.hash(password, 12, (err, hash) => {
+              
+              if (err) {
+                  res.status(500).json({
+                      error: "Internal server error"
+                  })
+              }
+              const userinfo = {
+                  name,
+                  email,
+                  password: hash,
+              };
+              var user = { name: `${userinfo.name}`, email: `${userinfo.email}`, password: `${userinfo.password}`, admin: true};
+              User.create(user)
+                  .then((data) => {
+                      console.log(data);
+                      var token = jwt.sign({
+                          name: name,
+                          email: email,
+                          //can be used if we want to send token to frontend
+                      },
+                          process.env.SECRET_KEY
+                      );
+                      res.status(200).json({
+                          message: "User added successfully",
+                      })
+                  })
+                  .catch((err) => {
+                      console.log(err);
+                      res.status(500).json({                                    
+                          error: "Database Error! "
+                      })
+                  })
+
+              // tempdata.push(user);
+              // console.log(tempdata);
+              // res.status(200).send(hash);
+              // Store hash in your password DB.
+          });
+          
+      }
+      
+  })
+
+//    
+
+
+}
+
 exports.updateUser = (req, res) => {
   const {name, email } = req.body;
   User.updateOne({ email: `${email}` }, { $set: { "name": `${name}` } })
