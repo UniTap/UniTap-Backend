@@ -1,6 +1,6 @@
 const User = require('../config/db');
 
-exports.adminVerify = (req, res , next) => {
+exports.adminVerify2 = (req, res , next) => {
     const email = req.body.email;
     User.find({ email: `${email}` })
         .then((data) => {

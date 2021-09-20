@@ -61,7 +61,13 @@ User.find({ email: `${email}` })
 };
  
 
-
+exports.readUsers = (req, res) => {
+  User.find()
+    .then((data) => {
+      console.log(data);
+      res
+  })
+}
 
 // Create route pending
 exports.createUser = (req, res) => {
@@ -222,7 +228,8 @@ exports.createAdmin = (req, res) => {
                           process.env.SECRET_KEY
                       );
                       res.status(200).json({
-                          message: "User added successfully",
+                        message: "User added successfully",
+                        token:`${token}`,
                       })
                   })
                   .catch((err) => {

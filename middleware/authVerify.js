@@ -7,7 +7,7 @@ exports.verifyToken = (req, res, next) => {
         if (err) {
             console.log(err);
         }
-        console.log(decoded) // bar
+        // console.log(decoded) // bar
         const userEmail = decoded.email;
         User.find({ email: `${userEmail}` })
             .then((data) => {
@@ -20,12 +20,12 @@ exports.verifyToken = (req, res, next) => {
             next();
     }) 
       
-        .catch((err) => {
-        res.status(500).json({
-            message: "Databse error"
-        });
-        });
-    })
+    .catch((err) => {
+    res.status(500).json({
+        message: "Databse error"
+    });
+})
+});
 };
 
 exports.adminVerify = (req, res , next) => {
@@ -50,9 +50,10 @@ exports.adminVerify = (req, res , next) => {
         }
         console.log(decoded) // bar
         const userEmail = decoded.email;
-        User.find({ email: `${email}` })
+        User.find({ email: `${userEmail}` })
             .then((data) => {
-                console.log(data);
+                // console.log(data[1].admin);
+
                 if (data[0].admin == true) {
                     next();
            
