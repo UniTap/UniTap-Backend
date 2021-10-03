@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 
 const authRoutes = require("./routes/auth");
-
+const orderRoutes = require('./routes/order')
 
 app.use(express.json());
 
@@ -22,6 +22,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/auth", authRoutes);
+app.use('/user', orderRoutes)
 
 
 

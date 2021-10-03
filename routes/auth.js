@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser , signIn , updateUser ,deleteUser , createAdmin, readUsers} = require('../controller/auth');
+const { createUser , signIn , updateUser ,deleteUser , createAdmin, readUsers,signout} = require('../controller/auth');
 const { adminVerify2 } = require('../middleware/adminVerify');
 const { verifyToken , adminVerify } = require('../middleware/authVerify');
 
@@ -10,6 +10,7 @@ const { verifyToken , adminVerify } = require('../middleware/authVerify');
 const router = express.Router();
 
 router.post("/signin",signIn);
+router.get('/signout', signout)
 // router.post("/create", adminVerify, createUser);
 router.post("/createuser" ,verifyToken, adminVerify, createUser);
 router.post("/updateuser" ,verifyToken, adminVerify, updateUser);

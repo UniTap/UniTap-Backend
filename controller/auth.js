@@ -8,14 +8,12 @@ const User = require('../config/db');
 
 exports.signIn = (req, res) => {
     const { email, password } = req.body;
-console.log(email);
-console.log(password);
+
 User.find({ email: `${email}` })
   .then((data) => {
     userData = data.rows;
     console.log(data[0]);
-     const username = data[0].name;
-     console.log(username);
+     const {_id,name,email,admin} = data[0];
 
       if (data.length === 0) {
      
@@ -38,11 +36,18 @@ User.find({ email: `${email}` })
              },
              process.env.SECRET_KEY
            );
+
+           res.cookie('tkn', token, { expire: new Date() + 9999 })
            res.status(200).json({
-             message: "User signed in successfully",
+             message: 'User signed in successfully',
              token: token,
-             username: username,
-           });
+             user: {
+               _id,
+               name,
+               email,
+               admin,
+             },
+           })
          } else {
           
            res.status(400).json({
@@ -59,7 +64,11 @@ User.find({ email: `${email}` })
        });
      });
 };
- 
+
+exports.signout = (req, res) => {
+  res.clearCookie('tkn')
+  res.json({ message: 'signout sucess' })
+}
 
 exports.readUsers = (req, res) => {
   User.find()
