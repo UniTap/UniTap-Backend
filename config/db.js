@@ -76,7 +76,10 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true
-  }
+  },
+  admin: {
+      type: Boolean,
+    }
 });
 
 // This creates our model from the above schema, using mongoose's model method
