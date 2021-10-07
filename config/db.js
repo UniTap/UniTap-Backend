@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 //db connection
 
@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 //       useFindAndModify: false,
 //     })
 //     .then(() => console.log('DB Connected'))
-
+//
 //   mongoose.connection.on('error', (err) => {
 //     console.log(`DB connection error: ${err.message}`)
 //   })
@@ -26,7 +26,7 @@ const mongoose = require('mongoose')
 //   await mongoose
 //     .connect(process.env.DATABASE_URI)
 //     .then(() => console.log('DB Connected'))
-
+//
 //   mongoose.connection.on('error', (err) => {
 //     console.log(`DB connection error: ${err.message}`)
 //   })
@@ -38,7 +38,7 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL)
     .then(() => {
         console.log("Mongodb connected")
-        
+
     }
 ).catch((err) => { console.log(err); })
 
@@ -62,11 +62,11 @@ mongoose.connect(process.env.DATABASE_URL)
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
- 
+
   name: {
     type: String,
         required: true
-        
+
   },
   email: {
     type: String,
