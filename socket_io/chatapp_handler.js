@@ -1,4 +1,4 @@
-const { ChatsModel } = require('../Models/chats')
+const { ChatsModel } = require('../models/chats')
 
 const chatAppHandler = (io) => {
     const MSG_PENDING = "pending"
