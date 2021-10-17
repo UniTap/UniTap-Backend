@@ -1,5 +1,5 @@
 const express = require('express')
-//const { LearnersModel } = require('../Models/users')
+const { LearnersModel } = require('../Models/User')
 // Need to add location of userlist of db
 const { ChatsModel } = require('../Models/chats')
 
