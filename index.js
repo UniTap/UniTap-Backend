@@ -5,7 +5,8 @@ const app = express();
 app.use(cors());
 
 const authRoutes = require("./routes/auth");
-const orderRoutes = require('./routes/order')
+const orderRoutes = require("./routes/order");
+const chatroutes = require("./routes/chat_router");
 
 app.use(express.json());
 
@@ -22,7 +23,9 @@ app.get("/", (req, res) => {
 
 
 app.use("/auth", authRoutes);
-app.use('/user', orderRoutes)
+app.use('/user', orderRoutes);
+app.use("/chatapp", chatroutes);
+
 
 
 
