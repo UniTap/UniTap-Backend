@@ -1,10 +1,10 @@
 const express = require('express')
 const { LearnersModel } = require('../Models/User')
 // Need to add location of userlist of db
-const { ChatsModel } = require('../Models/chats')
+const { ChatsModel } = require('../Models/chat')
 
 const router = express.Router()
-const welcomeMessage = "Welcome to Shine's chat app!"
+const welcomeMessage = "Welcome to Mohit's chat app!"
 const mongoError = "Couldn't fetch database!"
 
 const getListOfUsers = async () => {
@@ -70,11 +70,11 @@ const deleteWholeConvo = (id1, id2) => {
     return mongoPromise
 }
 
-router.get('/', (req, res) => {
+router.get('/', function (req, res) {
     res.send({ "msg": welcomeMessage })
 })
 
-router.get('/users', (req, res) => {
+router.get('/users', function (req, res) {
     getListOfUsers()
         .then(users => {
             res.send(users)
@@ -84,11 +84,11 @@ router.get('/users', (req, res) => {
         })
 })
 
-router.get('/chats', (req, res) => {
+router.get('/chats', function (req, res) {
     res.status(403).send("Access denied!")
 })
 
-router.get('/chats/:userID', (req, res) => {
+router.get('/chats/:userID', function (req, res) {
     let userID = req.params.userID
     console.log(`Hit! (/chat-app/chats/${userID})`)
     getChats(userID)
@@ -100,9 +100,9 @@ router.get('/chats/:userID', (req, res) => {
         })
 })
 
-router.post('/delete/', (req, res) => {
-    let messageIDs = req.body.messageIDs
-    console.log(messageIDs)
+router.post('/delete/', function (req, res) {
+    let messageIDs = req.body.messageIDs;
+    console.log(messageIDs);
     // let senderID = req.body.senderID
     let receiverID = req.body.receiverID
 
@@ -129,7 +129,7 @@ router.post('/delete/', (req, res) => {
 
 })
 
-router.post('/delete-convo', (req, res) => {
+router.post('/delete-convo', function (req, res) {
     let { id1, id2 } = req.body.IDs
     let mongoPromise = deleteWholeConvo(id1, id2)
     mongoPromise
@@ -149,6 +149,4 @@ router.post('/delete-convo', (req, res) => {
         })
 })
 
-module.exports = {
-    chatRouter: router
-}
+module.exports = router;
