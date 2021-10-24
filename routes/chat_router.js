@@ -1,29 +1,23 @@
+const User = require('../config/db');
 const express = require('express')
-const { LearnersModel } = require('../Models/User')
-// Need to add location of userlist of db
-const { ChatsModel } = require('../Models/chat')
+//const { LearnersModel } = require('../config/db');
 
-const router = express.Router()
-const welcomeMessage = "Welcome to Mohit's chat app!"
-const mongoError = "Couldn't fetch database!"
+// Need to add location of userlist of db
+const ChatsModel = require('../Models/chat');
+
+const router = express.Router();
+const welcomeMessage = "Welcome to Mohit's chat app!";
+const mongoError = "Couldn't fetch database!";
 
 const getListOfUsers = async () => {
-    // let usersList = await LearnersModel.find({}, {
-    //     email: true,
-    //     name: true
-    // })
 
-    //change learnersmodel here
-    let usersList = await LearnersModel.aggregate([
-        {
-            "$project": {
-                "email": true,
-                "name": true,
-                "id": "$email"
-            }
-        }
-    ])
-    return usersList
+    let userlist = await User.find({admin:true})
+/*        .then((data) =>{
+            //console.log(data);
+            return data;
+        });
+        */
+    return userlist;
 }
 
 const getChats = async (userID) => {
@@ -70,37 +64,40 @@ const deleteWholeConvo = (id1, id2) => {
     return mongoPromise
 }
 
-router.get('/', function (req, res) {
+router.get('/', async function (req, res) {
     res.send({ "msg": welcomeMessage })
 })
 
-router.get('/users', function (req, res) {
-    getListOfUsers()
-        .then(users => {
-            res.send(users)
+router.get('/users', async function (req, res) {
+     getListOfUsers()
+        .then((data) => {
+            //console.log(data);         
+            res.send(data);
         })
-        .catch(err => {
+        .catch(err => { 
             res.send(mongoError + err)
-        })
+        });
+
 })
 
-router.get('/chats', function (req, res) {
+router.get('/chats', async function (req, res) {
     res.status(403).send("Access denied!")
 })
 
-router.get('/chats/:userID', function (req, res) {
+router.get('/chats/:userID', async function (req, res) {
     let userID = req.params.userID
-    console.log(`Hit! (/chat-app/chats/${userID})`)
+    //console.log(userID);
+    //console.log(`Hit! (/chat-app/chats/${userID})`)
     getChats(userID)
-        .then(chats => {
+        .then((chats) => {
             res.send(chats)
         })
         .catch(err => {
-            res.send(mongoError + err)
+            res.send( err)
         })
 })
 
-router.post('/delete/', function (req, res) {
+router.post('/delete/', async function (req, res) {
     let messageIDs = req.body.messageIDs;
     console.log(messageIDs);
     // let senderID = req.body.senderID
@@ -129,7 +126,7 @@ router.post('/delete/', function (req, res) {
 
 })
 
-router.post('/delete-convo', function (req, res) {
+router.post('/delete-convo', async function (req, res) {
     let { id1, id2 } = req.body.IDs
     let mongoPromise = deleteWholeConvo(id1, id2)
     mongoPromise
